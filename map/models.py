@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class Map(models.Model):
     index = models.IntegerField(primary_key=True)
-    day = models.IntegerField (null=True)
+    day = models.DateField (null=True)
     sigungu = models.CharField(max_length=30, null=True)
     dong = models.CharField(max_length=20, null=True)
     # dong = models.CharField(max_length=20, choices=DONG_CHOICES, null=True)
