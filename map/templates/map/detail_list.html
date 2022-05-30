@@ -1,0 +1,194 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>5G 5G Speed Prediction - Detail</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="col-xl-12 col-lg-8">
+            <!-- Page Heading -->
+            <h1 class="h3 mt-3 mb-1 ml-0.1 text-gray-800"> Data Table </h1>
+            <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                         For more information about DataTables, please visit the <a target="_blank"
+                             href="https://datatables.net">official DataTables documentation</a>.</p>
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4 ">
+                <!-- <div class="card-header py-3"> -->
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">GPOT ID기준</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped  table-sm table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class = "table-active">
+                                    <th>GPOT ID</th>
+                                    <th>Date</th>
+                                    <th>GNB ID</th>
+                                    <th>CELL ID</th>
+                                    <th>Pred Speed(d)</th>
+                                    <th>RSRP(w)</th>
+                                    <th>RSRQ(w)</th>
+                                    <th>SINR(w)</th>
+                                    <th>CQI(w)</th>
+                                    <th>Dist</th>
+                                    <th>PRB(u)</th>
+                                    <th>PRB(d)</th>
+                                    <th>BLER(u)</th>
+                                    <th>BLER(d)</th>
+                                    <!-- <th>MCS(d)</th> -->
+                                    <th>MCS_layer(d)</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for map in detail_list %}
+                                <tr>
+                                    <td class="text-dark">{{map.gpot_id}}</td>
+                                    <td>{{map.day}}</td>
+                                    <td>{{map.gnb_ID}}</td>
+                                    <td>{{map.CELL_ID}}</td>
+                                    <td class="text-primary">{{map.pred_dl_speed}}</td>
+                                    <td>{{map.w_rsrp}}</td>
+                                    <td>{{map.w_rsrq}}</td>
+                                    <td>{{map.w_sinr}}</td>
+                                    <td>{{map.w_cqi}}</td>
+                                    <td>{{map.dist}}</td>
+                                    <td>{{map.UL_PRB}}</td>
+                                    <td>{{map.DL_PRB}}</td>
+                                    <td>{{map.ul_bler}}</td>
+                                    <td>{{map.dl_bler}}</td>
+                                    <!-- <td>{{map.dl_mcs}}</td> -->
+                                    <td>{{map.dl_mcs_layer}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>   
+            <!-- Page Heading -->
+            <h1 class="h3 mt-3 mb-1 ml-0.1 text-gray-800"> Chart </h1>
+            <p class="mb-4">Chart.js is a third party plugin that is used to generate the charts in this theme.
+                The charts below have been customized - for further customization options, please visit the <a
+                    target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js
+                    documentation</a>.</p>
+            <!-- Content Row -->
+               <!-- DataTales Example -->
+            <div class="card shadow mb-4 ">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"> Pred_Speed Chart </h6>
+                </div>
+            <!-- Chart -->
+            <div>
+                <canvas id="myChart" height="70"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // const labels = [
+                //   '20220501',
+                //   '20220502',
+                //   '20220503',
+                //   '20220504',
+                //   '20220506',      
+                //   '20220507',
+                //   '20220508', 
+                //   '20220510',          
+                // ];
+                const labels = {{labels|safe}};
+                // const labels =[{% for i in predSpeed %}'{{i.0}}',{% endfor %}];
+                
+                // console.log("lable",labels)
+
+                const data = {
+                  labels: labels,
+                  datasets: [{
+                    label: 'pred_Speed',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data:{{data|safe}},
+                    // data: [690.4406767, 688.3270267, 723.40697, 701.9228033,746.0128767, 662.1609333 , 758.26763, 0],
+                    // data:[{% for i in predSpeed %}'{{i.2}}', {% endfor %}]
+                  }]
+                };
+
+                const config = {
+                  type: 'line',
+                  data: data,
+                  options: {}
+                };
+              </script>
+              <script>
+                const myChart = new Chart(
+                  document.getElementById('myChart'),
+                  config
+                );
+
+
+
+              </script>
+              </div>
+                </div>
+            </div>                                
+            </div>
+            <!-- End of Main Content -->
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+
+</body>
+
+</html>
